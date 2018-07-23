@@ -15,9 +15,17 @@ const act = async (
     case CODE_POINTS.EMIT:
       outputFn(stack.length === 0 ? "0" : stack.pop().toString());
       break;
+    case CODE_POINTS.EMIT_AS_ASCII:
+      outputFn(String.fromCharCode(stack.length === 0 ? "0" : stack.pop()));
+      break;
     case CODE_POINTS.FLUSH:
       while (stack.length > 0) {
         outputFn(stack.pop().toString());
+      }
+      break;
+    case CODE_POINTS.FLUSH_AS_ASCII:
+      while (stack.length > 0) {
+        outputFn(String.fromCharCode(stack.pop()));
       }
       break;
     case CODE_POINTS.CONSUME:

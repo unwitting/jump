@@ -126,7 +126,9 @@ Programs terminate if the execution cursor leaves the end of the code string, or
 - `*` (`MULTIPLY`) : Pop `B`, then pop `A`, then push `A * B`
 - `d` (`DUPLICATE`) : Pop `A`, then push `A` twice
 - `^` (`EMIT`) : Pop `A` and write `A.toString()` (JS) to `stdout`
+- `A` (`EMIT_AS_ASCII`) : Pop `A` and write `String.fromCharCode(A)` (JS) to `stdout`
 - `n` (`FLUSH`) : `EMIT` until there are no values on the stack
+- `a` (`FLUSH_AS_ASCII`) : `EMIT_AS_ASCII` until there are no values on the stack
 - `v` (`CONSUME`) : read a line from `stdin` and push its integer representation (eg `"10" -> 10`)
 - `>` (`FORWARD_JUMP`) : pop `N` and jump the execution cursor `N` steps forward (right)
 - `}` (`CONDITIONAL_FORWARD_JUMP`) : pop `Q`, then pop `N`, then jump execution cursor `N` steps forward if `Q == 0`

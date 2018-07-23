@@ -143,3 +143,23 @@ describe("Flags and jumps", () => {
     expect(await exec("1 3|2* d8- 4} 3< n")).toEqual(["8"]);
   });
 });
+
+describe("ASCII", () => {
+  it("can emit ASCII characters from the stack", async () => {
+    expect(await exec("725**4+A 825**5+A 92+7*A 825**A")).toEqual([
+      "J",
+      "U",
+      "M",
+      "P"
+    ]);
+  });
+
+  it("can flush the stack as ASCII characters", async () => {
+    expect(await exec("825** 92+7* 825**5+ 725**4+ a")).toEqual([
+      "J",
+      "U",
+      "M",
+      "P"
+    ]);
+  });
+});
