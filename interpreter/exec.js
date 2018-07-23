@@ -87,7 +87,7 @@ const act = async (
 };
 
 const exec = async (codeString, input, outputFn, track = () => {}) => {
-  const codeArray = codeString.split("");
+  const codeArray = _.reject(codeString.split(""), c => c === "\n");
   const stack = [];
   const flags = {};
   const output = [];

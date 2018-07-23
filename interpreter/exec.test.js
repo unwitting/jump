@@ -25,6 +25,10 @@ describe("Entry, termination and execution flow", () => {
     expect(await exec("1\n2\nn")).toEqual(["2", "1"]);
   });
 
+  it("doesn't count newlines as code points", async () => {
+    expect(await exec("2>\n11n")).toEqual([]);
+  });
+
   it("can flush the stack to output", async () => {
     expect(await exec("123n")).toEqual(["3", "2", "1"]);
   });
