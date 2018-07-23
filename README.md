@@ -192,9 +192,9 @@ This one's a bit bigger. Let's step through it.
 
 1.  Push `0` (`[0]`)
 1.  Create flag 0 at location `2`
-1.  Add `1` to the value on top of the stack
-1.  `d^` is a small pattern meaning "print the top value to stdout without removing it": it duplicates and then emits
+1.  Add `1` to the value on top of the stack (`[1]` on first run through)
+1.  `d^` is a small pattern meaning "print the top value to stdout without removing it": it duplicates and then emits (`[1]` on first run through)
 1.  `455**` means "put `100` on the stack": it equates to `4*5*5`
 1.  `d*` means "square the top value of the stack": duplicate and then multiply
-1.  All of `d 455** d* -` therefore means "put the result of subtracting `10000` from the current top of the stack on top of the stack`
+1.  All of `d 455** d* -` therefore means "put the result of subtracting `10000` from the current top of the stack on top of the stack`(`[1 -9999]` on first run through)
 1.  `2}0<`: if the result of that subtraction was `0` (ie if the top of the stack before it was `10000`, and not less), jump `2` spaces forward (and finish the program). Else, jump back to flag 0 and repeat, adding one more and looping until we hit `10000`.
