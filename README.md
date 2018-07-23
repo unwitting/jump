@@ -113,6 +113,10 @@ On program start, the flag mapping is empty.
 
 Program execution starts at the location of the first `_` instruction (there should be at most one), or at the first instruction of the code string if no `_` is found.
 
+### Program termination
+
+Programs terminate if the execution cursor leaves the end of the code string, or if a `x` (`TERMINATE`) instruction is executed.
+
 ### Instructions
 
 - `0`, `1`, `2`, ..., `9` : Push the given integer
@@ -128,3 +132,47 @@ Program execution starts at the location of the first `_` instruction (there sho
 - `}` (`CONDITIONAL_FORWARD_JUMP`) : pop `Q`, then pop `N`, then jump execution cursor `N` steps forward if `Q == 0`
 - `|` (`SET_FLAG`) : pop `A`, and set `flag A` to the current execution cursor
 - `<` (`JUMP_TO_FLAG`) : pop `A`, and set the current execution cursor to that marked by `flag A`
+
+## Examples
+
+Let's look at a few example programs to get you started.
+Use whichever mechanism you like for running them (see the first heading above), but I'll just include the code itself here.
+
+### Add two integer literals together
+
+```
+_12+^x
+```
+
+This program:
+
+1.  Begins `_` (Stack: `[]`)
+1.  Pushes `1` to the stack (Stack: `[1]`)
+1.  Pushes `2` to the stack (`[1 2]`)
+1.  Pops and adds the top two values on the stack and pushes the result (`+`) (`[3]`)
+1.  Pops and emits the top value to `stdout` (`[]`)
+1.  Terminates with `x`
+
+If you run it, you'll see `3` emitted to `stdout`.
+
+Both the `_` and the `x` can be omitted, since they're implicit at the start and end of the code anyway.
+This program is functionally equivalent:
+
+```
+12+^
+```
+
+### Read two integers from stdin and add them
+
+```
+vv+^
+```
+
+This program:
+
+1.  Reads a number `A` from `stdin` and pushes it (`[A]`)
+1.  Reads a number `B` from `stdin` and pushes it (`[B]`)
+1.  Pops and adds the top two values on the stack and pushes the result (`+`) (`[A+B]`)
+1.  Pops and emits the top value to `stdout` (`[]`)
+
+If you run it, you'll be prompted twice for input and see the sum of your two values emitted to `stdout`.
