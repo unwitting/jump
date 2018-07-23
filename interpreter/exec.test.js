@@ -1,6 +1,6 @@
 const { exec } = require("./exec");
 
-describe("Simple scripts", () => {
+describe("Entry, termination and execution flow", () => {
   it("can implicitly begin at start of code", async () => {
     expect(await exec("12+^")).toEqual(["3"]);
   });
