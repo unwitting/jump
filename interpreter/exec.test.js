@@ -155,11 +155,12 @@ describe("ASCII", () => {
   });
 
   it("can flush the stack as ASCII characters", async () => {
-    expect(await exec("825** 92+7* 825**5+ 725**4+ a")).toEqual([
-      "J",
-      "U",
-      "M",
-      "P"
-    ]);
+    expect(await exec("825** 92+7* 825**5+ 725**4+ a")).toEqual(["JUMP"]);
+  });
+
+  it("can read text from stdin to the stack as ASCII", async () => {
+    expect(await exec("Rn", ["Hi"])).toEqual(["72", "105"]);
+    expect(await exec("RAA", ["Hi"])).toEqual(["H", "i"]);
+    expect(await exec("Ra", ["Hi"])).toEqual(["Hi"]);
   });
 });

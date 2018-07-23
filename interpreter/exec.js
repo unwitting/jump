@@ -24,12 +24,21 @@ const act = async (
       }
       break;
     case CODE_POINTS.FLUSH_AS_ASCII:
+      let out = "";
       while (stack.length > 0) {
-        outputFn(String.fromCharCode(stack.pop()));
+        out += String.fromCharCode(stack.pop());
       }
+      outputFn(out);
       break;
     case CODE_POINTS.CONSUME:
       stack.push(parseInt(await inputFn(), 10));
+      break;
+    case CODE_POINTS.CONSUME_AS_ASCII:
+      const word = await inputFn();
+      const toPush = _.reverse(word.split(""));
+      for (const char of toPush) {
+        stack.push(char.charCodeAt(0));
+      }
       break;
     case CODE_POINTS.PLUS:
       stack.push(stack.pop() + stack.pop());

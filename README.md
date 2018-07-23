@@ -128,8 +128,9 @@ Programs terminate if the execution cursor leaves the end of the code string, or
 - `^` (`EMIT`) : Pop `A` and write `A.toString()` (JS) to `stdout`
 - `A` (`EMIT_AS_ASCII`) : Pop `A` and write `String.fromCharCode(A)` (JS) to `stdout`
 - `n` (`FLUSH`) : `EMIT` until there are no values on the stack
-- `a` (`FLUSH_AS_ASCII`) : `EMIT_AS_ASCII` until there are no values on the stack
+- `a` (`FLUSH_AS_ASCII`) : compile the values on the stack into a string of their ASCII representations (in pop order) and write to `stdout`
 - `v` (`CONSUME`) : read a line from `stdin` and push its integer representation (eg `"10" -> 10`)
+- `R` (`CONSUME_AS_ASCII`) : read a line from `stdin` and push it as ASCII codes, in reverse order (eg `"Hi"` -> push 105 (i) then push 72 (H))
 - `>` (`FORWARD_JUMP`) : pop `N` and jump the execution cursor `N` steps forward (right)
 - `}` (`CONDITIONAL_FORWARD_JUMP`) : pop `Q`, then pop `N`, then jump execution cursor `N` steps forward if `Q == 0`
 - `|` (`SET_FLAG`) : pop `A`, and set `flag A` to the current execution cursor
@@ -200,3 +201,17 @@ This one's a bit bigger. Let's step through it.
 1.  `d*` means "square the top value of the stack": duplicate and then multiply
 1.  All of `d 455** d* -` therefore means "put the result of subtracting `10000` from the current top of the stack on top of the stack`(`[1 -9999]` on first run through)
 1.  `2}0<`: if the result of that subtraction was `0` (ie if the top of the stack before it was `10000`, and not less), jump `2` spaces forward (and finish the program). Else, jump back to flag 0 and repeat, adding one more and looping until we hit `10000`.
+
+### Basic ASCII handling
+
+```
+725**4+ A
+825** 92+7* 825**5+ 725**4+ a
+R n
+```
+
+This shows off three abilities around ASCII text handling in Jump:
+
+1.  `725**4+ A` pushes `74` then uses `A` (`EMIT_AS_ASCII`) to push the ASCII representation of that value to `stdout`, emitting the character "J"
+1.  `825** 92+7* 825**5+ 725**4+ a` pushes four characters' values to the stack then uses `a` (`FLUSH_AS_ASCII`) to flush them one by one to `stdout` as ASCII, emitting "J U M P"
+1.  `R a` reads a line from `stdin` with `R` and then immediately flushes it again as ASCII. Because `R` pushes to the stack in reverse order, this results in what you entered coming back out in order.
