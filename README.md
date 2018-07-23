@@ -4,7 +4,43 @@ Welcome to Jump!
 Jump is a hard-to-read esoteric programming language.
 It has curiosity value and very little else, but it's a fun puzzle to write a program or two, and it'll help you learn about stack-based programming.
 
-This repo acts as both the language spec and the source for a NodeJS-based interpreter.
+This repo acts as both the language spec and the source for a Node.JS-based interpreter.
+
+## Running a Jump program
+
+Before getting into the language concepts, let's talk about how to run Jump code.
+
+First, clone this repo.
+
+```
+nvm use
+```
+
+Uses `nvm` to select the correct version of Node.JS for the interpreter, and
+
+```
+npm install --production
+```
+
+will install the dependencies you need (very few, and even those are nice-to-haves)
+
+From here, you have a few options.
+
+### Running a local .jump file
+
+You can really use any file extension, but if you have some code in a file, you can run it with
+
+```
+node jump.js path/to/file.jump
+```
+
+### Running a small inline script
+
+If you just want to play with tiny one-liners, you can give them directly to the interpreter with the `-e` or `--exec` flag:
+
+```
+node jump.js -e '12+^'
+```
 
 ## Concepts
 
