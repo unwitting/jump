@@ -78,7 +78,11 @@ const act = async (
       flags[stack.pop()] = executionCursor;
       break;
     case CODE_POINTS.JUMP_TO_FLAG:
-      newExecutionCursor = flags[stack.pop()];
+      const target = stack.pop();
+      if (flags[target] === undefined) {
+        break;
+      }
+      newExecutionCursor = flags[target];
       break;
     case CODE_POINTS.ZERO:
       stack.push(0);

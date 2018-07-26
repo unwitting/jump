@@ -150,6 +150,10 @@ describe("Flags and jumps", () => {
   it("can set a flag and jump back to it", async () => {
     expect(await exec("1 3|2* d8- 4} 3< n")).toEqual(["8"]);
   });
+
+  it("can successfully ignore a command to jump to a nonexistent flag", async () => {
+    expect(await exec("1<2^")).toEqual(["2"]);
+  });
 });
 
 describe("ASCII", () => {
