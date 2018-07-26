@@ -54,6 +54,8 @@ exec(
     console.log(
       `STR : ${codeArray
         .join("")
+        .replace(/_/g, colors.grey("_"))
+        .replace(/x/g, colors.grey("x"))
         .replace(/\^/g, colors.red("^"))
         .replace(/n/g, colors.red("n"))
         .replace(/v/g, colors.red("v"))
