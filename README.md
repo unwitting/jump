@@ -131,6 +131,7 @@ Programs terminate if the execution cursor leaves the end of the code string, or
 - `a` (`FLUSH_AS_ASCII`) : compile the values on the stack into a string of their ASCII representations (in pop order) and write to `stdout`
 - `v` (`CONSUME`) : read a line from `stdin` and push its integer representation (eg `"10" -> 10`)
 - `R` (`CONSUME_AS_ASCII`) : read a line from `stdin` and push it as ASCII codes, in reverse order (eg `"Hi"` -> push 105 (i) then push 72 (H))
+- `o` (`SWAP`) : pop `A`, pop `B`, then push `A` and push `B` (swap the top two values on the stack)
 - `>` (`FORWARD_JUMP`) : pop `N` and jump the execution cursor `N` steps forward (right)
 - `}` (`CONDITIONAL_FORWARD_JUMP`) : pop `Q`, then pop `N`, then jump execution cursor `N` steps forward if `Q == 0`
 - `|` (`SET_FLAG`) : pop `A`, and set `flag A` to the current execution cursor

@@ -11,6 +11,7 @@ module.exports = {
   FLUSH_AS_ASCII: "a",
   CONSUME: "v",
   CONSUME_AS_ASCII: "R",
+  SWAP: "o",
   FORWARD_JUMP: ">",
   CONDITIONAL_FORWARD_JUMP: "}",
   SET_FLAG: "|",

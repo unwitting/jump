@@ -42,6 +42,12 @@ const act = async (
         stack.push(char.charCodeAt(0));
       }
       break;
+    case CODE_POINTS.SWAP:
+      const swap = stack.pop();
+      const other = stack.pop();
+      stack.push(swap);
+      stack.push(other);
+      break;
     case CODE_POINTS.PLUS:
       stack.push(stack.pop() + stack.pop());
       break;
