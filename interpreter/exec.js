@@ -2,6 +2,8 @@ const _ = require("lodash");
 
 const CODE_POINTS = require("./src/code_points");
 
+const pause = ms => new Promise((resolve, reject) => setTimeout(resolve, ms));
+
 const act = async (
   executionCursor,
   codePoint,
@@ -103,7 +105,13 @@ const act = async (
   return { newExecutionCursor };
 };
 
-const exec = async (codeString, input, outputFn, track = () => {}) => {
+const exec = async (
+  codeString,
+  input,
+  outputFn,
+  track = () => {},
+  { delay } = {}
+) => {
   const codeArray = _.reject(codeString.split(""), c => c === "\n");
   const stack = [];
   const flags = {};
@@ -147,10 +155,15 @@ const exec = async (codeString, input, outputFn, track = () => {}) => {
     track({
       step,
       executionCursor,
+      codeArray,
       codePoint,
       stack,
       flags
     });
+    step++;
+    if (delay) {
+      await pause(delay);
+    }
   }
 
   if (fixedOutput) {
