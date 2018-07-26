@@ -43,6 +43,9 @@ const act = async (
       }
       break;
     case CODE_POINTS.SWAP:
+      if (stack.length <= 1) {
+        break;
+      }
       const swap = stack.pop();
       const other = stack.pop();
       stack.push(swap);

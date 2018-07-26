@@ -33,6 +33,10 @@ describe("Entry, termination and execution flow", () => {
     expect(await exec("23o n")).toEqual(["2", "3"]);
   });
 
+  it("can 'swap' the top two values on a stack of one", async () => {
+    expect(await exec("2o n")).toEqual(["2"]);
+  });
+
   it("can flush the stack to output", async () => {
     expect(await exec("123n")).toEqual(["3", "2", "1"]);
   });
