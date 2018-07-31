@@ -218,3 +218,36 @@ This shows off three abilities around ASCII text handling in Jump:
 1.  `725**4+ A` pushes `74` then uses `A` (`EMIT_AS_ASCII`) to push the ASCII representation of that value to `stdout`, emitting the character "J"
 1.  `825** 92+7* 825**5+ 725**4+ a` pushes four characters' values to the stack then uses `a` (`FLUSH_AS_ASCII`) to flush them one by one to `stdout` as ASCII, emitting "J U M P"
 1.  `R a` reads a line from `stdin` with `R` and then immediately flushes it again as ASCII. Because `R` pushes to the stack in reverse order, this results in what you entered coming back out in order.
+
+### Reusable code ("functions")
+
+```
+072*) 1| 0[ dd** o[
+
+25 23) 1<
+26 23) 1<
+27 23) 1<
+
+n
+```
+
+Let's look at a "pattern" for achieving reusable code in Jump.
+
+The code above effectively defines a "function" for finding the cube of a number and then calls it with three different values before ending.
+
+Function definition:
+
+1.  `072*)` places flag `0` at a location `72*` or `14` steps ahead of the `)`. This puts it directly on the end of this first line's code.
+1.  `1|` sets flag `1` at the current location. This defines the "entry point" of our cubing function.
+1.  `0[` "stomps" to flag `0`, meaning that it jumps there and removes the flag. This takes execution to the end of the first line, skipping the actual functional code remaining. The skipped code constitutes the stuff that does the actual work of cubing numbers, and returning back to where we want. We'll come back to it in a second.
+
+Function calling:
+
+1.  On the next line, `25` pushes `2` then `5`. Here, `5` is the number we want cubing (the function argument) and the `2` is our intended return location - we're saying we want execution to come back to flag `2` once we've cubed our five.
+1.  `23)` throws that flag `2` forward three steps from the `)` (to the end of the line, after the next expression).
+1.  `1<` "calls" the function. We jump to flag `1` (set at the start, during function definition).
+1.  From there, we first hit that `0[` again. This does nothing, since flag `0` no longer exists.
+1.  We run the code that actually cubes the `5` on top of the stack (`dd**`), leaving us with `125` then `2` on the stack.
+1.  Finally we `SWAP` (`o`) the top of the stack to get our return address in the right place, and stomp `[` to it, returning execution to the flag defined before calling.
+1.  We're now left with the cubed value of `5` on the top of the stack.
+1.  Repeat for the next two lines, and then flush to stdout with `n`.
