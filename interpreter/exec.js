@@ -77,6 +77,10 @@ const act = async (
     case CODE_POINTS.SET_FLAG:
       flags[stack.pop()] = executionCursor;
       break;
+    case CODE_POINTS.SET_FLAG_AHEAD:
+      const delta = stack.pop();
+      flags[stack.pop()] = executionCursor + delta;
+      break;
     case CODE_POINTS.JUMP_TO_FLAG:
       const target = stack.pop();
       if (flags[target] === undefined) {

@@ -15,6 +15,7 @@ module.exports = {
   FORWARD_JUMP: ">",
   CONDITIONAL_FORWARD_JUMP: "}",
   SET_FLAG: "|",
+  SET_FLAG_AHEAD: ")",
   JUMP_TO_FLAG: "<",
   ZERO: "0",
   ONE: "1",

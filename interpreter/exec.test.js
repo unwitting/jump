@@ -151,6 +151,10 @@ describe("Flags and jumps", () => {
     expect(await exec("1 3|2* d8- 4} 3< n")).toEqual(["8"]);
   });
 
+  it("can set a flag at a future code point and jump to it", async () => {
+    expect(await exec("0|14)1<0<1^")).toEqual(["1"]);
+  });
+
   it("can successfully ignore a command to jump to a nonexistent flag", async () => {
     expect(await exec("1<2^")).toEqual(["2"]);
   });
