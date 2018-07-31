@@ -13,111 +13,88 @@ const act = async (
   outputFn
 ) => {
   let newExecutionCursor = executionCursor;
-  switch (codePoint) {
-    case CODE_POINTS.EMIT:
-      outputFn(stack.length === 0 ? "0" : stack.pop().toString());
-      break;
-    case CODE_POINTS.EMIT_AS_ASCII:
-      outputFn(String.fromCharCode(stack.length === 0 ? "0" : stack.pop()));
-      break;
-    case CODE_POINTS.FLUSH:
-      while (stack.length > 0) {
-        outputFn(stack.pop().toString());
-      }
-      break;
-    case CODE_POINTS.FLUSH_AS_ASCII:
-      let out = "";
-      while (stack.length > 0) {
-        out += String.fromCharCode(stack.pop());
-      }
-      outputFn(out);
-      break;
-    case CODE_POINTS.CONSUME:
-      stack.push(parseInt(await inputFn(), 10));
-      break;
-    case CODE_POINTS.CONSUME_AS_ASCII:
-      const word = await inputFn();
-      const toPush = _.reverse(word.split(""));
-      for (const char of toPush) {
-        stack.push(char.charCodeAt(0));
-      }
-      break;
-    case CODE_POINTS.SWAP:
-      if (stack.length <= 1) {
-        break;
-      }
+  if (codePoint === CODE_POINTS.EMIT) {
+    outputFn(stack.length === 0 ? "0" : stack.pop().toString());
+  } else if (codePoint === CODE_POINTS.EMIT_AS_ASCII) {
+    outputFn(String.fromCharCode(stack.length === 0 ? "0" : stack.pop()));
+  } else if (codePoint === CODE_POINTS.FLUSH) {
+    while (stack.length > 0) {
+      outputFn(stack.pop().toString());
+    }
+  } else if (codePoint === CODE_POINTS.FLUSH_AS_ASCII) {
+    let out = "";
+    while (stack.length > 0) {
+      out += String.fromCharCode(stack.pop());
+    }
+    outputFn(out);
+  } else if (codePoint === CODE_POINTS.CONSUME) {
+    stack.push(parseInt(await inputFn(), 10));
+  } else if (codePoint === CODE_POINTS.CONSUME_AS_ASCII) {
+    const word = await inputFn();
+    const toPush = _.reverse(word.split(""));
+    for (const char of toPush) {
+      stack.push(char.charCodeAt(0));
+    }
+  } else if (codePoint === CODE_POINTS.SWAP) {
+    if (stack.length > 1) {
       const swap = stack.pop();
       const other = stack.pop();
       stack.push(swap);
       stack.push(other);
-      break;
-    case CODE_POINTS.PLUS:
-      stack.push(stack.pop() + stack.pop());
-      break;
-    case CODE_POINTS.SUBTRACT:
-      stack.push(-stack.pop() + stack.pop());
-      break;
-    case CODE_POINTS.MULTIPLY:
-      stack.push(stack.pop() * stack.pop());
-      break;
-    case CODE_POINTS.DUPLICATE:
-      const dup = stack.pop();
-      stack.push(dup);
-      stack.push(dup);
-      break;
-    case CODE_POINTS.FORWARD_JUMP:
-      newExecutionCursor += stack.pop();
-      break;
-    case CODE_POINTS.CONDITIONAL_FORWARD_JUMP:
-      const distance = stack.pop();
-      if (stack.pop() === 0) {
-        newExecutionCursor += distance;
-      }
-      break;
-    case CODE_POINTS.SET_FLAG:
-      flags[stack.pop()] = executionCursor;
-      break;
-    case CODE_POINTS.SET_FLAG_AHEAD:
-      const delta = stack.pop();
-      flags[stack.pop()] = executionCursor + delta;
-      break;
-    case CODE_POINTS.JUMP_TO_FLAG:
-      const target = stack.pop();
-      if (flags[target] === undefined) {
-        break;
-      }
+    }
+  } else if (codePoint === CODE_POINTS.PLUS) {
+    stack.push(stack.pop() + stack.pop());
+  } else if (codePoint === CODE_POINTS.SUBTRACT) {
+    stack.push(-stack.pop() + stack.pop());
+  } else if (codePoint === CODE_POINTS.MULTIPLY) {
+    stack.push(stack.pop() * stack.pop());
+  } else if (codePoint === CODE_POINTS.DUPLICATE) {
+    const dup = stack.pop();
+    stack.push(dup);
+    stack.push(dup);
+  } else if (codePoint === CODE_POINTS.FORWARD_JUMP) {
+    newExecutionCursor += stack.pop();
+  } else if (codePoint === CODE_POINTS.CONDITIONAL_FORWARD_JUMP) {
+    const distance = stack.pop();
+    if (stack.pop() === 0) {
+      newExecutionCursor += distance;
+    }
+  } else if (codePoint === CODE_POINTS.SET_FLAG) {
+    flags[stack.pop()] = executionCursor;
+  } else if (codePoint === CODE_POINTS.SET_FLAG_AHEAD) {
+    const delta = stack.pop();
+    flags[stack.pop()] = executionCursor + delta;
+  } else if (codePoint === CODE_POINTS.JUMP_TO_FLAG) {
+    const target = stack.pop();
+    if (flags[target] !== undefined) {
       newExecutionCursor = flags[target];
-      break;
-    case CODE_POINTS.ZERO:
-      stack.push(0);
-      break;
-    case CODE_POINTS.ONE:
-      stack.push(1);
-      break;
-    case CODE_POINTS.TWO:
-      stack.push(2);
-      break;
-    case CODE_POINTS.THREE:
-      stack.push(3);
-      break;
-    case CODE_POINTS.FOUR:
-      stack.push(4);
-      break;
-    case CODE_POINTS.FIVE:
-      stack.push(5);
-      break;
-    case CODE_POINTS.SIX:
-      stack.push(6);
-      break;
-    case CODE_POINTS.SEVEN:
-      stack.push(7);
-      break;
-    case CODE_POINTS.EIGHT:
-      stack.push(8);
-      break;
-    case CODE_POINTS.NINE:
-      stack.push(9);
-      break;
+    }
+  } else if (codePoint === CODE_POINTS.STOMP_TO_FLAG) {
+    const target = stack.pop();
+    if (flags[target] !== undefined) {
+      newExecutionCursor = flags[target];
+      delete flags[target];
+    }
+  } else if (codePoint === CODE_POINTS.ZERO) {
+    stack.push(0);
+  } else if (codePoint === CODE_POINTS.ONE) {
+    stack.push(1);
+  } else if (codePoint === CODE_POINTS.TWO) {
+    stack.push(2);
+  } else if (codePoint === CODE_POINTS.THREE) {
+    stack.push(3);
+  } else if (codePoint === CODE_POINTS.FOUR) {
+    stack.push(4);
+  } else if (codePoint === CODE_POINTS.FIVE) {
+    stack.push(5);
+  } else if (codePoint === CODE_POINTS.SIX) {
+    stack.push(6);
+  } else if (codePoint === CODE_POINTS.SEVEN) {
+    stack.push(7);
+  } else if (codePoint === CODE_POINTS.EIGHT) {
+    stack.push(8);
+  } else if (codePoint === CODE_POINTS.NINE) {
+    stack.push(9);
   }
   return { newExecutionCursor };
 };

@@ -137,6 +137,7 @@ Programs terminate if the execution cursor leaves the end of the code string, or
 - `)` (`SET_FLAG_AHEAD`) : pop `A`, pop `B`, and set `flag A` to the current execution cursor plus `B` (eg `12)` sets `flag 1` to the location two ahead of the `)`)
 - `|` (`SET_FLAG`) : pop `A`, and set `flag A` to the current execution cursor (`?|` is therefore functionally the same as `?0)`)
 - `<` (`JUMP_TO_FLAG`) : pop `A`, and set the current execution cursor to that marked by `flag A`
+- `[` (`STOMP_TO_FLAG`) : pop `A`, and set the current execution cursor to that marked by `flag A`, then remove the record of `flag A`
 
 ## Examples
 
