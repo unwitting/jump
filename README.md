@@ -205,7 +205,7 @@ This one's a bit bigger. Let's step through it.
 1.  All of `d 455** d* -` therefore means "put the result of subtracting `10000` from the current top of the stack on top of the stack (`[1 -9999]` on first run through)
 1.  `2}0<`: if the result of that subtraction was `0` (ie if the top of the stack before it was `10000`, and not less), jump `2` spaces forward (and finish the program). Else, jump back to flag 0 and repeat, adding one more and looping until we hit `10000`.
 
-### Basic ASCII handling
+### Basic ASCII handling
 
 ```
 725**4+ A
